@@ -1,0 +1,13 @@
+clis:
+  1:
+    name: "Back up home dir"
+    special: "hourly"
+    command: "rsync /home/ jdoe@target:/var/backup"
+  2:
+    name: "Restart Supervisord"
+    min: "*/30"
+    hour: "*"
+    day_of_month: "*"
+    month: "*"
+    day_of_week: "*"
+    command: '/usr/local/sbin/restart_gman_worker.sh >> /home/jdoe/log/$(date +\%Y_\%m_\%d)_${HOSTNAME}.txt 2>&1'
