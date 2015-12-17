@@ -1,0 +1,8 @@
+---
+- name: Setup Cron jobs
+  hosts: myserver.www.com
+  remote_user: deployer
+  sudo: yes
+
+  roles:
+    - cli

@@ -1,31 +1,26 @@
 ---
-- hosts: myserver.www.com
-  remote_user: deployer
-  sudo: yes
+- include_vars: ../vars/cli_info.yml
 
-  tasks:
-    - include_vars: ../vars/cli_info.yml
+- name: Debug
+  debug: msg="job_name {{item.key}} special {{item.value.special}}"
+  with_dict: "{{clis}}"
 
-    - name: Debug
-      debug: msg="job_name {{item.key}} special {{item.value.special}}"
-      with_dict: "{{clis}}"
+- name: "Crons with special frequency"
+  cron: name="{{item.value.name}}"
+        special_time="{{item.value.special}}"
+        state=present
+        job="{{item.value.command}}"
+  when: item.value.special is defined
+  with_dict: "{{clis}}"
 
-    - name: "Crons with special frequency"
-      cron: name="{{item.value.name}}"
-            special_time="{{item.value.special}}"
-            state=present
-            job="{{item.value.command}}"
-            when: item.value.special is defined
-            with_dict: "{{clis}}"
-
-    - name: "Crons without special frequency"
-      cron: name="{{item.value.name}}"
-            minute="{{item.value.min}}"
-            ur="{{item.value.hour}}"
-            day="{{item.value.day_of_month}}"
-            month="{{item.value.month}}"
-            weekday="{{item.value.day_of_week}}"
-            state=present
-            job="{{item.value.command}}"
-      when: item.value.special is undefined
-      with_dict: "{{clis}}"
+- name: "Crons without special frequency"
+  cron: name="{{item.value.name}}"
+        minute="{{item.value.min}}"
+        ur="{{item.value.hour}}"
+        day="{{item.value.day_of_month}}"
+        month="{{item.value.month}}"
+        weekday="{{item.value.day_of_week}}"
+        state=present
+        job="{{item.value.command}}"
+  when: item.value.special is undefined
+  with_dict: "{{clis}}"
