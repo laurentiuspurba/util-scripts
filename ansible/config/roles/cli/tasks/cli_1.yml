@@ -16,7 +16,7 @@
 - name: "Crons without special frequency"
   cron: name="{{item.value.name}}"
         minute="{{item.value.min}}"
-        ur="{{item.value.hour}}"
+        hour="{{item.value.hour}}"
         day="{{item.value.day_of_month}}"
         month="{{item.value.month}}"
         weekday="{{item.value.day_of_week}}"
